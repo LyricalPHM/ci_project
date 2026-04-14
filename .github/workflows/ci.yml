@@ -27,3 +27,10 @@ jobs:
 
       - name: Run tests
         run: pytest
+
+      - name: Notify Slack on failure
+        if: ${{ failure() }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"❌ ТЕСТ НЕ ПРОЙДЕН ${{ github.repository }}\"}" \
+            "${{ secrets.SLACK_WEBHOOK_URL }}"
